@@ -1,7 +1,11 @@
 # ESP32 BLE Mouse Jiggler
 
 A device which periodically randomly perturbs the mouse, for keeping you active
-on chat media, stopping screen savers kick in etc etc
+on chat media, stopping screen savers from kicking in etc
+
+It's a BLE HID peripheral that identifies as a mouse. It's indistinguishable from a
+regular bluetooth mouse, because it *is* a bluetooth mouse.
+
 
 # setup
 
