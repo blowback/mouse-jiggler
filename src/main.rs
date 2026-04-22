@@ -75,6 +75,10 @@ impl Mouse {
             .set_io_cap(SecurityIOCap::NoInputNoOutput);
 
         let server = device.get_server();
+        server.on_disconnect(|_desc, reason| {
+            ::log::info!("BLE disconnected ({:?}), restarting advertising", reason);
+            BLEDevice::take().get_advertising().start().ok();
+        });
         let mut hid = BLEHIDDevice::new(server);
 
         let input_mouse = hid.input_report(MOUSE_ID);
@@ -91,8 +95,7 @@ impl Mouse {
         ble_advertising
             .name("BTMouse")
             .appearance(0x03C2) // 0x03c1 is KEYBOARD
-            .add_service_uuid(hid.hid_service().lock().uuid())
-            .scan_response(false);
+            .add_service_uuid(hid.hid_service().lock().uuid());
 
         ble_advertising.start().unwrap();
 
